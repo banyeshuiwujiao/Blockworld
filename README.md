@@ -1,8 +1,8 @@
 # Blockworld
 A clone of the famous game "Minecraft" developed with Unity and C#. 
-## Blockworld Alpha
+### Blockworld Alpha
 Alpha version of Blockworld: 
-- terrain generation by casual seed -
-- basic trees spawn in development -
-- basic FPS controller -
+- terrain generation by casual seed 
+- basic trees spawn in development 
+- basic FPS controller 
                              
