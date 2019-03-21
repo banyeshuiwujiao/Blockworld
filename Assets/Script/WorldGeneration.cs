@@ -11,6 +11,7 @@ public class WorldGeneration : MonoBehaviour
     public float terHeight;
     public float terDetail;
     public GameObject[] blocks;
+    public GameObject player;
     //private fields
     private new Transform transform;        //finds the parent by tag
     //private Assets.Script.TreeSpawn trees;        //tree class
@@ -49,6 +50,10 @@ public class WorldGeneration : MonoBehaviour
                             PlaceTree(new Vector3(x, y + 1, z));
                         }
                         block = Instantiate(blocks[0], new Vector3(x, y, z), Quaternion.identity);
+                        if((x == xLenght/2) && (z == zLenght/2))
+                        {
+                            Instantiate(player, new Vector3(x, y + 2, z), Quaternion.identity); 
+                        }
                     }
                     else if (yLimit - y < dirtLayers)
                     {
@@ -113,15 +118,11 @@ public class WorldGeneration : MonoBehaviour
                 }
                 else if (y == pos.y - 1)
                 {
-                    Assets.Script.TreeSpawn.CreateLeavesLayer2(blocks, new Vector3(pos.x, y, pos.z));
-                    /*GameObject leavesBlock1 = Instantiate(blocks[4], new Vector3(pos.x + 1, y, pos.z), Quaternion.identity);
-                    leavesBlock1.transform.SetParent(transform);
-                    GameObject leavesBlock2 = Instantiate(blocks[4], new Vector3(pos.x - 1, y, pos.z), Quaternion.identity);
-                    leavesBlock2.transform.SetParent(transform);
-                    GameObject leavesBlock3 = Instantiate(blocks[4], new Vector3(pos.x, y, pos.z + 1), Quaternion.identity);
-                    leavesBlock3.transform.SetParent(transform);
-                    GameObject leavesBlock4 = Instantiate(blocks[4], new Vector3(pos.x, y, pos.z - 1), Quaternion.identity);
-                    leavesBlock4.transform.SetParent(transform);*/
+                    GameObject[] leaves = Assets.Script.TreeSpawn.CreateLeavesLayer2(blocks, new Vector3(pos.x, y, pos.z));
+                    foreach (GameObject leaf in leaves)
+                    {
+                        leaf.transform.SetParent(transform);
+                    }
                 }
                 else if(y == pos.y - 1)
                 {
