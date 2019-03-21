@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Script;
 using UnityEngine;
 
 public class WorldGeneration : MonoBehaviour
@@ -13,14 +14,14 @@ public class WorldGeneration : MonoBehaviour
     public GameObject[] blocks;
     public GameObject player;
     //private fields
-    private new Transform transform;        //finds the parent by tag
+    private Transform enviromentTransform;        //finds the parent by tag
     //private Assets.Script.TreeSpawn trees;        //tree class
 
     // Start is called before the first frame update
     void Start()
     {
         //seed = Random.Range(100000, 999999);
-        transform = GameObject.FindGameObjectWithTag("Enviroment").transform;
+        enviromentTransform = GameObject.FindGameObjectWithTag("Enviroment").transform;
         //trees = new Assets.Script.TreeSpawn();
         GenerateWorld();
     }
@@ -65,7 +66,7 @@ public class WorldGeneration : MonoBehaviour
                         //create stoneBlock and place it, then set its parent
                         block = Instantiate(blocks[2], new Vector3(x, y, z), Quaternion.identity);
                     }
-                    block.transform.SetParent(transform);
+                    block.transform.SetParent(enviromentTransform);
                 }
             }
         }
@@ -96,7 +97,7 @@ public class WorldGeneration : MonoBehaviour
         {
             //instantiate the block and set its parent
             GameObject block = Instantiate(blocks[3], new Vector3(vector.x, vector.y + i, vector.z), Quaternion.identity);
-            block.transform.SetParent(transform);
+            block.transform.SetParent(enviromentTransform);
         }
         PlaceTreeLeaves(treeHeigh, new Vector3(vector.x, vector.y + treeHeigh, vector.z));
     }
@@ -113,20 +114,22 @@ public class WorldGeneration : MonoBehaviour
             {
                 if (y == pos.y)
                 {
-                    GameObject leavesBlock = Instantiate(blocks[4], new Vector3(pos.x, y, pos.z), Quaternion.identity);
-                    leavesBlock.transform.SetParent(transform);
+                    TreeSpawn.CreateLeavesLayer1(blocks, new Vector3(pos.x, y, pos.z)).transform.SetParent(enviromentTransform);
+                    //leavesBlock.transform.SetParent(transform);
                 }
                 else if (y == pos.y - 1)
                 {
-                    GameObject[] leaves = Assets.Script.TreeSpawn.CreateLeavesLayer2(blocks, new Vector3(pos.x, y, pos.z));
-                    foreach (GameObject leaf in leaves)
+                    foreach (GameObject leaf in TreeSpawn.CreateLeavesLayer2(blocks, new Vector3(pos.x, y, pos.z)))
                     {
-                        leaf.transform.SetParent(transform);
+                        leaf.transform.SetParent(enviromentTransform);
                     }
                 }
-                else if(y == pos.y - 1)
+                else if(y == pos.y - 3)
                 {
-                    
+                    foreach (GameObject leaf in TreeSpawn.CreateLeavesLayer3(blocks, new Vector3(pos.x, y, pos.z)))
+                    {
+                        leaf.transform.SetParent(enviromentTransform);
+                    }
                 }
             }
         }
